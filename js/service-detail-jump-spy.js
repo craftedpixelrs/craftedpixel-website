@@ -70,5 +70,14 @@
 
   window.addEventListener('scroll', onScrollOrResize, { passive: true });
   window.addEventListener('resize', onScrollOrResize, { passive: true });
-  apply();
+  function firstApply() {
+    window.requestAnimationFrame(function () {
+      apply();
+    });
+  }
+  if (document.readyState === 'complete') {
+    firstApply();
+  } else {
+    window.addEventListener('load', firstApply, { once: true });
+  }
 })();

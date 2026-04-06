@@ -111,6 +111,7 @@
   }
 
   function showBanner(fromFab) {
+    if (!root) return;
     modeInitial = !fromFab;
     if (banner) {
       banner.removeAttribute('hidden');
@@ -150,7 +151,11 @@
       : root.querySelector('[data-cc-accept-all]');
     if (firstFocus && typeof firstFocus.focus === 'function') {
       requestAnimationFrame(function () {
-        firstFocus.focus();
+        try {
+          firstFocus.focus({ preventScroll: true });
+        } catch (e) {
+          firstFocus.focus();
+        }
       });
     }
   }
@@ -289,6 +294,7 @@
   }
 
   function openPreferences() {
+    if (!document.getElementById('cc-consent-root')) return;
     showBanner(true);
   }
 
@@ -300,25 +306,35 @@
         localStorage.removeItem(STORAGE_KEY);
       }
     } catch (e) {}
-    try {
-      buildDom();
-    } catch (e) {
-      console.error('[CraftedPixel privacy-notice] buildDom failed:', e);
-      return;
-    }
     var answered = hasAnswered();
-    if (answered) {
-      syncTogglesFromStored();
-      dispatch(safeParse());
-      hideBanner();
-    } else {
-      /* After first paint so LCP can be hero copy, not the consent panel (Lighthouse mobile). */
+    function mountDom() {
+      if (document.getElementById('cc-consent-root')) return;
+      try {
+        buildDom();
+      } catch (e) {
+        console.error('[CraftedPixel privacy-notice] buildDom failed:', e);
+        return;
+      }
+      if (answered) {
+        syncTogglesFromStored();
+        dispatch(safeParse());
+        hideBanner();
+        return;
+      }
+      /* After paint: LCP stays hero copy; buildDom does not run in the first frame (long task / layout). */
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           showBanner(false);
         });
       });
     }
+    if (answered) {
+      mountDom();
+      return;
+    }
+    requestAnimationFrame(function () {
+      requestAnimationFrame(mountDom);
+    });
   }
 
   window.CraftedPixelCookieConsent = {
@@ -327,14 +343,9 @@
     open: openPreferences
   };
 
-  function boot() {
-    try {
-      init();
-    } catch (e) {
-      console.error('[CraftedPixel privacy-notice]', e);
-    }
+  try {
+    init();
+  } catch (e) {
+    console.error('[CraftedPixel privacy-notice]', e);
   }
-  boot();
-  document.addEventListener('DOMContentLoaded', boot);
-  window.addEventListener('load', boot);
 })();

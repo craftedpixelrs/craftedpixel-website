@@ -38,6 +38,8 @@
     clearLeave();
     layer.classList.remove('is-visible');
     layer.dataset.placement = '';
+    layer.style.left = '';
+    layer.style.top = '';
     window.setTimeout(function () {
       if (!layer.classList.contains('is-visible')) layer.hidden = true;
     }, hideDelayMs);
@@ -55,40 +57,49 @@
     layer.hidden = false;
     layer.classList.add('is-visible');
     layer.style.visibility = 'hidden';
+    layer.style.left = '-9999px';
+    layer.style.top = '0';
 
-    var rect = activeBtn.getBoundingClientRect();
-    var margin = 12;
-    var gap = 8;
-    var vw = window.innerWidth;
-    var vh = window.innerHeight;
-    var w = layer.offsetWidth;
-    var h = layer.offsetHeight;
+    function measureAndPlace() {
+      if (!activeBtn) return;
+      var rect = activeBtn.getBoundingClientRect();
+      var margin = 12;
+      var gap = 8;
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var w = layer.offsetWidth;
+      var h = layer.offsetHeight;
 
-    var left = rect.left + rect.width / 2 - w / 2;
-    left = Math.max(margin, Math.min(left, vw - w - margin));
+      var left = rect.left + rect.width / 2 - w / 2;
+      left = Math.max(margin, Math.min(left, vw - w - margin));
 
-    var spaceAbove = rect.top - margin;
-    var spaceBelow = vh - rect.bottom - margin;
-    var placeAbove = spaceAbove >= h + gap || spaceAbove > spaceBelow;
+      var spaceAbove = rect.top - margin;
+      var spaceBelow = vh - rect.bottom - margin;
+      var placeAbove = spaceAbove >= h + gap || spaceAbove > spaceBelow;
 
-    var top;
-    if (placeAbove) {
-      top = rect.top - h - gap;
-      if (top < margin) top = margin;
-      layer.dataset.placement = 'above';
-    } else {
-      top = rect.bottom + gap;
-      if (top + h > vh - margin) top = Math.max(margin, vh - h - margin);
-      layer.dataset.placement = 'below';
+      var top;
+      if (placeAbove) {
+        top = rect.top - h - gap;
+        if (top < margin) top = margin;
+        layer.dataset.placement = 'above';
+      } else {
+        top = rect.bottom + gap;
+        if (top + h > vh - margin) top = Math.max(margin, vh - h - margin);
+        layer.dataset.placement = 'below';
+      }
+
+      var arrowLeft = rect.left + rect.width / 2 - left;
+      arrowLeft = Math.max(18, Math.min(arrowLeft, w - 18));
+      arrow.style.left = arrowLeft + 'px';
+
+      layer.style.left = left + 'px';
+      layer.style.top = top + 'px';
+      layer.style.visibility = '';
     }
 
-    var arrowLeft = rect.left + rect.width / 2 - left;
-    arrowLeft = Math.max(18, Math.min(arrowLeft, w - 18));
-    arrow.style.left = arrowLeft + 'px';
-
-    layer.style.left = left + 'px';
-    layer.style.top = top + 'px';
-    layer.style.visibility = '';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(measureAndPlace);
+    });
   }
 
   function show(btn) {
@@ -96,9 +107,7 @@
     if (activeBtn && activeBtn !== btn) activeBtn.setAttribute('aria-expanded', 'false');
     activeBtn = btn;
     btn.setAttribute('aria-expanded', 'true');
-    requestAnimationFrame(function () {
-      layout();
-    });
+    layout();
   }
 
   function toggle(btn) {

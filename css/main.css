@@ -44,6 +44,12 @@
       --scrollbar-thumb-active: rgba(15, 118, 110, 0.45);
     }
 
+    /* Syne & Instrument Sans: @font-face comes from the Google Fonts stylesheet (HTML uses &display=swap).
+       Local icon fonts: css/fontawesome.min.css — every @font-face there includes font-display: swap.
+       Critical CSS: index.html inlines above-the-fold hero + navbar in <head>; other pages rely on blocking
+       main.min.css. For async main site-wide, add per-template inline shell (body + .page-hero / .navbar) or a
+       tiny shared critical file to avoid CLS. */
+
     .visually-hidden {
       position: absolute;
       width: 1px;
@@ -680,6 +686,7 @@
       height: clamp(28px, 5vw, 36px);
       width: auto;
       max-width: min(200px, 52vw);
+      aspect-ratio: 421 / 86;
       object-fit: contain;
       object-position: left center;
       flex-shrink: 0;
@@ -1116,12 +1123,11 @@
       pointer-events: none;
       overflow: hidden;
     }
+    /* Grid: tiny SVG tile as data-URI (no extra HTTP request; same 64px rhythm as before). */
     .hero-bg-grid {
       position: absolute;
       inset: -20% -10% -10% -10%;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M0 .5h64M.5 0v64' fill='none' stroke='%23ffffff' stroke-opacity='.03'/%3E%3C/svg%3E");
       background-size: 64px 64px;
       mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 70%);
       -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 70%);
@@ -1340,6 +1346,8 @@
       padding: 0;
       border: none;
       max-width: 100%;
+      /* Reserve ~2 lines so Syne vs fallback swap does not shift layout (CLS). */
+      min-height: clamp(4.35rem, 10.4vw, 7.2rem);
     }
     .hero-heading-main {
       display: block;
@@ -1728,6 +1736,7 @@
     .about-facepile img {
       width: 48px;
       height: 48px;
+      aspect-ratio: 1;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid #fff;
@@ -2370,6 +2379,7 @@
       margin: 0 0 clamp(14px, 2vw, 20px);
       max-width: 18ch;
       text-wrap: balance;
+      min-height: clamp(4.15rem, 9.4vw, 8.9rem);
     }
     .page-hero-lede {
       font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
@@ -6567,6 +6577,7 @@
       height: clamp(30px, 4.8vw, 38px);
       width: auto;
       max-width: min(240px, 78vw);
+      aspect-ratio: 421 / 86;
       object-fit: contain;
       object-position: left center;
     }
@@ -11124,6 +11135,7 @@
       z-index: 2147483000;
       max-width: min(420px, calc(100vw - 24px));
       pointer-events: auto;
+      /* Out of document flow — never shifts page layout when shown (CLS). */
     }
     .cc-banner[hidden] {
       display: none !important;
