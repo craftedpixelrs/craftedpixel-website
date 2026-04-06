@@ -1,0 +1,64 @@
+# CraftedPixel — clean URLs without .html (Apache + mod_rewrite)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 301: /index.html → /
+  RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+  RewriteRule ^ /? [R=301,L]
+
+  # 301: /page.html → /page (canonical, avoids duplicate URLs)
+  RewriteCond %{THE_REQUEST} \s/+(.+)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # Internal: /page → serve page.html if it exists
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+# Smaller transfer for HTML/CSS/JS/SVG (when mod_deflate is enabled on the server)
+# Enable on Ubuntu/Debian: sudo a2enmod deflate && sudo systemctl reload apache2
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/x-javascript application/json image/svg+xml application/xhtml+xml application/xml application/rss+xml text/xml
+</IfModule>
+
+# Expires + Cache-Control (YSlow/GTmetrix “Expires headers” + browser cache)
+# Enable: sudo a2enmod expires && sudo systemctl reload apache2
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Only listed types get long TTL; everything else stays uncached by default
+  ExpiresDefault "access plus 0 seconds"
+  # HTML: revalidate every visit; Expires header still present (audit tools)
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 30 days"
+  ExpiresByType application/javascript "access plus 30 days"
+  ExpiresByType text/javascript "access plus 30 days"
+  ExpiresByType font/woff2 "access plus 180 days"
+  ExpiresByType font/woff "access plus 180 days"
+  ExpiresByType font/ttf "access plus 180 days"
+  ExpiresByType font/otf "access plus 180 days"
+  ExpiresByType image/svg+xml "access plus 60 days"
+  ExpiresByType image/png "access plus 60 days"
+  ExpiresByType image/jpeg "access plus 60 days"
+  ExpiresByType image/gif "access plus 60 days"
+  ExpiresByType image/webp "access plus 60 days"
+  ExpiresByType image/avif "access plus 60 days"
+  ExpiresByType image/x-icon "access plus 60 days"
+</IfModule>
+
+# Explicit Cache-Control backup (some audits read this even when Expires is set)
+# Enable: sudo a2enmod headers && sudo systemctl reload apache2
+<IfModule mod_headers.c>
+  Header merge Vary Accept-Encoding
+  <FilesMatch "\.(css|js|mjs)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "\.(woff2|woff|ttf|otf)$">
+    Header set Cache-Control "public, max-age=15552000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(svg|png|jpe?g|gif|webp|avif|ico)$">
+    Header set Cache-Control "public, max-age=5184000"
+  </FilesMatch>
+</IfModule>

@@ -1,0 +1,5 @@
+# CraftedPixel — https://getcraftedpixel.com
+User-agent: *
+Allow: /
+
+Sitemap: https://getcraftedpixel.com/sitemap.xml
