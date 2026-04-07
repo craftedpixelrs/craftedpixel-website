@@ -1,5 +1,12 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+    /* CLS: reserve layout for images; pair with width & height on <img> in HTML */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
     :root {
       --primary: #001638;
       --primary-dark: #000f24;
