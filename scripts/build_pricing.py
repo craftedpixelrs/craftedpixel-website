@@ -39,12 +39,12 @@ def PAR(t="Partial"):
 
 def service_href(slug):
     return {
-        "uiux": "service-ui-ux.html",
-        "webdev": "service-web-development.html",
-        "seo": "service-seo-growth.html",
-        "brand": "service-brand-design-systems.html",
-        "cms": "service-content-cms.html",
-        "analytics": "service-analytics-experimentation.html",
+        "uiux": "service-ui-ux",
+        "webdev": "service-web-development",
+        "seo": "service-seo-growth",
+        "brand": "service-brand-design-systems",
+        "cms": "service-content-cms",
+        "analytics": "service-analytics-experimentation",
     }[slug]
 
 
@@ -62,9 +62,9 @@ def table_html(caption, slug, columns, rows):
     lede = (
         '              <p class="pricing-compare-lede">Columns match the cards above, left to right. '
         f'<a href="{service_href(slug)}">Service page</a> · '
-        '<a href="how-we-work.html#pricing-expectations">What moves the quote</a> · '
-        '<a href="contact.html">Contact</a> · '
-        f'<a href="pricing.html#{slug}">Direct link to this tab</a>.</p>\n'
+        '<a href="how-we-work#pricing-expectations">What moves the quote</a> · '
+        '<a href="contact">Contact</a> · '
+        f'<a href="pricing#{slug}">Direct link to this tab</a>.</p>\n'
     )
     return (
         f'\n            <div class="pricing-compare-wrap" id="compare-{slug}">\n'
@@ -215,13 +215,13 @@ top = re.sub(
 )
 top = re.sub(
     r'<link rel="canonical" href="[^"]*"\s*/>',
-    '<link rel="canonical" href="https://craftedpixel.com/pricing.html" />',
+    '<link rel="canonical" href="https://getcraftedpixel.com/pricing" />',
     top,
     count=1,
 )
 
 nav_block = idx_text[body_start:hero_idx]
-nav_block = nav_block.replace('href="#hero"', 'href="index.html"', 1)
+nav_block = nav_block.replace('href="#hero"', 'href="/"', 1)
 
 hero = """
   <header class="page-hero has-geo" aria-labelledby="pricing-hero-title">
@@ -237,14 +237,14 @@ hero = """
     <div class="geo geo-tri c-teal geo-f1" style="--tri-s:13px;bottom:26%;left:5%"></div>
     <div class="geo geo-ring c-navy geo-spin" style="width:56px;height:56px;bottom:16%;right:9%"></div>
     <div class="container">
-      <p class="page-hero-crumb"><a href="index.html">Home</a> / Pricing</p>
+      <p class="page-hero-crumb"><a href="/">Home</a> / Pricing</p>
       <span class="section-label">Pricing</span>
       <h1 id="pricing-hero-title" class="page-hero-title">Packages by service—with a clear scope matrix.</h1>
       <p class="page-hero-lede">Pick a tab to see four tiers and a comparison table underneath. Numbers are starting points until we align scope on a short call.</p>
       <div class="page-hero-aux" style="margin-top:1rem">
-        <a href="how-we-work.html#pricing-expectations">How we price</a>
-        · <a href="services.html">All services</a>
-        · <a href="contact.html">Get a quote</a>
+        <a href="how-we-work#pricing-expectations">How we price</a>
+        · <a href="services">All services</a>
+        · <a href="contact">Get a quote</a>
       </div>
     </div>
   </header>

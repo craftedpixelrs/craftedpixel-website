@@ -65,6 +65,30 @@
       body:
         'You need trustworthy events, funnels, or test cadence—not another dashboard nobody opens. Analytics packages focus on taxonomy, implementation discipline, and decisions tied to experiments.',
     },
+    automation: {
+      tab: 'ai-automation',
+      title: 'Likely starting point: AI &amp; business automation',
+      body:
+        'You want integrations, repeatable workflows, or governed AI copilots over your own data—not a demo chatbot. AI &amp; automation packages run from process audit through shipped flows and evaluation discipline.',
+    },
+    automation_retainer: {
+      tab: 'ai-automation',
+      title: 'Ongoing automation &amp; model iteration',
+      body:
+        'When new flows land often or prompts and parsers need tuning, a retainer usually beats one-off quotes. We align on hours, incident response, and how change gets tested before production.',
+    },
+    render3d: {
+      tab: 'render3d',
+      title: 'Likely starting point: 3D &amp; rendering',
+      body:
+        'You need product stills, motion loops, or web-ready GLB/USDZ that match your brand—not one-off PNGs nobody can reuse. The 3D packages anchor hero work through campaign-scale delivery; we still confirm shot count and formats in writing.',
+    },
+    render3d_retainer: {
+      tab: 'render3d',
+      title: 'Ongoing 3D production &amp; seasonal drops',
+      body:
+        'When launches repeat monthly, a retainer usually beats ad-hoc quotes—shared Slack, a render calendar, and rollover-friendly hours. We align on SKU velocity and which formats marketing burns through fastest.',
+    },
     phased: {
       tab: null,
       title: 'A phased plan usually beats a single giant quote',
@@ -91,8 +115,14 @@
 
     if (q.q1 === 'mixed') key = 'phased';
     else if (q.q1 === 'seo') key = 'seo';
-    else if (q.q1 === 'analytics') key = 'analytics';
-    else if (q.q1 === 'brand') key = 'brand';
+    else if (q.q1 === 'render3d') {
+      if (q.q2 === 'ongoing') key = 'render3d_retainer';
+      else key = 'render3d';
+    } else if (q.q1 === 'analytics') key = 'analytics';
+    else if (q.q1 === 'automation') {
+      if (q.q2 === 'ongoing') key = 'automation_retainer';
+      else key = 'automation';
+    } else if (q.q1 === 'brand') key = 'brand';
     else if (q.q1 === 'cms') key = 'cms';
     else if (q.q1 === 'wordpress') {
       if (q.q2 === 'ongoing') key = 'wp_retainer';
@@ -194,7 +224,7 @@
     }
 
     if (primaryEl) {
-      primaryEl.href = 'contact.html';
+      primaryEl.href = 'contact';
       var pl = primaryEl.querySelector('.scope-wizard-primary-label');
       if (pl) pl.textContent = 'Start with a short note';
     }
@@ -213,7 +243,7 @@
         };
       } else {
         secondaryEl.hidden = false;
-        secondaryEl.href = 'how-we-work.html';
+        secondaryEl.href = 'how-we-work';
         secondaryEl.textContent = 'How we work';
         secondaryEl.className = 'button button--outline-dark';
         secondaryEl.setAttribute('data-scope-result-secondary', '');

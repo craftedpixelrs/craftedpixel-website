@@ -1,18 +1,18 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+/**
+ * patch-blocking-google-fonts.mjs — RETIRED / NO-OP
+ *
+ * This script used to revert the async font-load pattern back to a blocking
+ * <link rel="stylesheet"> for Google Fonts. That pattern was causing ~1,200 ms
+ * render-blocking penalty on every page (confirmed via Lighthouse).
+ *
+ * It has been replaced by the non-blocking preload+onload pattern across all
+ * HTML files (done via a bulk PowerShell patch in April 2026).
+ *
+ * Long-term: run scripts/setup-self-hosted-fonts.sh + patch-google-fonts-to-local.mjs
+ * to remove the Google Fonts CDN dependency entirely.
+ *
+ * This file is kept as a no-op so it doesn't break any existing npm/build scripts
+ * that reference it by name.
+ */
 
-const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const re =
-  /  <link rel="preload" href="https:\/\/fonts\.googleapis\.com\/css2\?family=Instrument\+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" as="style" onload="this\.onload=null;this\.rel='stylesheet'" \/>\r?\n  <noscript><link rel="stylesheet" href="https:\/\/fonts\.googleapis\.com\/css2\?family=Instrument\+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" \/><\/noscript>/g;
-const rep = `  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Syne:wght@400;500;600;700;800&amp;display=swap" />`;
-
-for (const f of fs.readdirSync(root).filter((x) => x.endsWith('.html'))) {
-  const p = path.join(root, f);
-  let t = fs.readFileSync(p, 'utf8');
-  const n = t.replace(re, rep);
-  if (n !== t) {
-    fs.writeFileSync(p, n);
-    console.log(f);
-  }
-}
+console.log('[patch-blocking-google-fonts] No-op — Google Fonts are now loaded non-blocking. Nothing to do.');

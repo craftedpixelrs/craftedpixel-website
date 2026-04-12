@@ -4,8 +4,8 @@ import { fileURLToPath } from "url";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-const DESKTOP_LI = /            <li><a href="contact\.html">Contact<\/a><\/li>\r?\n/g;
-const MOBILE_A = /    <a href="contact\.html" onclick="closeMobile\(\)">Contact<\/a>\r?\n/g;
+const DESKTOP_LI = /            <li><a href="contact">Contact<\/a><\/li>\r?\n/g;
+const MOBILE_A = /    <a href="contact" onclick="closeMobile\(\)">Contact<\/a>\r?\n/g;
 
 for (const f of fs.readdirSync(root)) {
   if (!f.endsWith(".html")) continue;
@@ -18,16 +18,16 @@ for (const f of fs.readdirSync(root)) {
 
   if (f === "contact.html") {
     t = t.replace(
-      /            <li><a href="contact\.html" aria-current="page">Contact<\/a><\/li>\r?\n          <\/ul>\r?\n        <\/div>\r?\n        <div class="nav-actions">/,
+      /            <li><a href="contact" aria-current="page">Contact<\/a><\/li>\r?\n          <\/ul>\r?\n        <\/div>\r?\n        <div class="nav-actions">/,
       "          </ul>\n        </div>\n        <div class=\"nav-actions\">"
     );
     t = t.replace(
-      /<a href="contact\.html" class="button button--primary nav-cta">/,
-      '<a href="contact.html" class="button button--primary nav-cta" aria-current="page">'
+      /<a href="contact" class="button button--primary nav-cta">/,
+      '<a href="contact" class="button button--primary nav-cta" aria-current="page">'
     );
     t = t.replace(
-      /<a href="contact\.html" class="button button--primary nav-cta-mobile">/,
-      '<a href="contact.html" class="button button--primary nav-cta-mobile" aria-current="page">'
+      /<a href="contact" class="button button--primary nav-cta-mobile">/,
+      '<a href="contact" class="button button--primary nav-cta-mobile" aria-current="page">'
     );
   }
 

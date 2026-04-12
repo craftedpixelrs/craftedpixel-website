@@ -10,7 +10,7 @@
     '<h2 id="careers-apply-title">Job application</h2>' +
     '<button type="button" class="careers-apply-modal__close" data-careers-apply-close aria-label="Close application form"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>' +
     '</div>' +
-    '<p class="careers-apply-modal__lede">Use this form for <strong>this open role only</strong>. Project inquiries belong on <a href="contact.html">Contact</a>.</p>' +
+    '<p class="careers-apply-modal__lede">Use this form for <strong>this open role only</strong>. Project inquiries belong on <a href="contact">Contact</a>.</p>' +
     '<div id="careersApplySuccess" class="careers-apply-success" role="status" aria-live="polite" hidden>' +
     '<span class="careers-apply-success-icon" aria-hidden="true"><i class="fa-solid fa-circle-check"></i></span>' +
     '<h3 class="careers-apply-success-title">Application received</h3>' +

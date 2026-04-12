@@ -72,6 +72,28 @@
   var toggleAnalytics;
   var toggleMarketing;
   var modeInitial = true;
+  /** Set if user clicks “Cookie settings” before consent UI is mounted (deferred first paint). */
+  var pendingOpenPreferences = false;
+
+  document.addEventListener(
+    'click',
+    function (e) {
+      var node = e.target;
+      if (!node) return;
+      if (node.nodeType !== 1) node = node.parentElement;
+      if (!node || typeof node.closest !== 'function') return;
+      var t = node.closest('[data-cc-open]');
+      if (!t) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (root) {
+        showBanner(true);
+      } else {
+        pendingOpenPreferences = true;
+      }
+    },
+    true
+  );
 
   function setDetailsOpen(open) {
     if (!detailsEl) return;
@@ -200,7 +222,7 @@
             '<div class="cc-banner__icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></div>' +
             '<div class="cc-banner__head">' +
               '<h2 class="cc-banner__title" id="cc-banner-title">Cookies &amp; privacy</h2>' +
-              '<p class="cc-banner__lead">We use cookies to run the site, remember preferences, and—only if you agree—measure usage and support relevant content. Read our <a href="cookies.html">Cookie Policy</a> and <a href="privacy.html">Privacy Policy</a>.</p>' +
+              '<p class="cc-banner__lead">We use cookies to run the site, remember preferences, and—only if you agree—measure usage and support relevant content. Read our <a href="cookies">Cookie Policy</a> and <a href="privacy">Privacy Policy</a>.</p>' +
             '</div>' +
             '<button type="button" class="cc-banner__close" data-cc-close hidden aria-label="Close cookie settings">' +
               '<i class="fa-solid fa-xmark" aria-hidden="true"></i>' +
@@ -280,22 +302,17 @@
 
     document.addEventListener('keydown', onKeydown);
 
-    document.addEventListener(
-      'click',
-      function (e) {
-        var t = e.target && e.target.closest && e.target.closest('[data-cc-open]');
-        if (!t) return;
-        e.preventDefault();
-        e.stopPropagation();
-        showBanner(true);
-      },
-      true
-    );
+    if (pendingOpenPreferences) {
+      pendingOpenPreferences = false;
+      showBanner(true);
+    }
   }
 
   function openPreferences() {
-    if (!document.getElementById('cc-consent-root')) return;
-    showBanner(true);
+    if (!root) {
+      try { init(); } catch (e) {}
+    }
+    if (root) showBanner(true);
   }
 
   function init() {
@@ -307,34 +324,19 @@
       }
     } catch (e) {}
     var answered = hasAnswered();
-    function mountDom() {
-      if (document.getElementById('cc-consent-root')) return;
-      try {
-        buildDom();
-      } catch (e) {
-        console.error('[CraftedPixel privacy-notice] buildDom failed:', e);
-        return;
-      }
-      if (answered) {
-        syncTogglesFromStored();
-        dispatch(safeParse());
-        hideBanner();
-        return;
-      }
-      /* After paint: LCP stays hero copy; buildDom does not run in the first frame (long task / layout). */
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          showBanner(false);
-        });
-      });
-    }
-    if (answered) {
-      mountDom();
+    try {
+      buildDom();
+    } catch (e) {
+      console.error('[CraftedPixel privacy-notice] buildDom failed:', e);
       return;
     }
-    requestAnimationFrame(function () {
-      requestAnimationFrame(mountDom);
-    });
+    if (answered) {
+      syncTogglesFromStored();
+      dispatch(safeParse());
+      hideBanner();
+    } else {
+      showBanner(false);
+    }
   }
 
   window.CraftedPixelCookieConsent = {

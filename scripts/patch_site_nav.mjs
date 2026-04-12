@@ -6,10 +6,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 
 const DESKTOP_RESOURCES_RE =
-  /            <li><a href="how-we-work\.html">How we work<\/a><\/li>\s*\n            <li><a href="blog\.html">Blog<\/a><\/li>\s*\n            <li><a href="careers\.html"([^>]*)>Careers<\/a><\/li>/;
+  /            <li><a href="how-we-work">How we work<\/a><\/li>\s*\n            <li><a href="blog">Blog<\/a><\/li>\s*\n            <li><a href="careers"([^>]*)>Careers<\/a><\/li>/;
 
 const DESKTOP_RESOURCES_NEW = `            <li class="nav-dropdown">
-              <a href="how-we-work.html" class="nav-dropdown-link" aria-haspopup="true">
+              <a href="how-we-work" class="nav-dropdown-link" aria-haspopup="true">
                 <span class="nav-dropdown-label">Resources</span>
                 <span class="nav-dropdown-caret" aria-hidden="true">
                   <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
@@ -17,22 +17,22 @@ const DESKTOP_RESOURCES_NEW = `            <li class="nav-dropdown">
               </a>
               <div class="nav-dropdown-panel-wrap">
                 <ul id="navResourcesMenu" class="nav-dropdown-panel" role="list">
-                  <li><a href="how-we-work.html">How we work</a></li>
-                  <li><a href="blog.html">Blog</a></li>
-                  <li><a href="careers.html"$1>Careers</a></li>
+                  <li><a href="how-we-work">How we work</a></li>
+                  <li><a href="blog">Blog</a></li>
+                  <li><a href="careers"$1>Careers</a></li>
                 </ul>
               </div>
             </li>`;
 
-const MOBILE_OLD = `    <a href="how-we-work.html" onclick="closeMobile()">How we work</a>
-    <a href="blog.html" onclick="closeMobile()">Blog</a>
-    <a href="careers.html" onclick="closeMobile()">Careers</a>`;
+const MOBILE_OLD = `    <a href="how-we-work" onclick="closeMobile()">How we work</a>
+    <a href="blog" onclick="closeMobile()">Blog</a>
+    <a href="careers" onclick="closeMobile()">Careers</a>`;
 
 const MOBILE_NEW = `    <div class="mobile-nav-group">
-      <a href="how-we-work.html" class="mobile-nav-heading mobile-nav-heading--link" onclick="closeMobile()">Resources</a>
-      <a href="how-we-work.html" class="mobile-nav-sub" onclick="closeMobile()">How we work</a>
-      <a href="blog.html" class="mobile-nav-sub" onclick="closeMobile()">Blog</a>
-      <a href="careers.html" class="mobile-nav-sub" onclick="closeMobile()">Careers</a>
+      <a href="how-we-work" class="mobile-nav-heading mobile-nav-heading--link" onclick="closeMobile()">Resources</a>
+      <a href="how-we-work" class="mobile-nav-sub" onclick="closeMobile()">How we work</a>
+      <a href="blog" class="mobile-nav-sub" onclick="closeMobile()">Blog</a>
+      <a href="careers" class="mobile-nav-sub" onclick="closeMobile()">Careers</a>
     </div>`;
 
 const NEW_ARIA_BODY = `(function initNavServicesAria() {
@@ -72,13 +72,13 @@ function replaceAria(text) {
 }
 
 function patchText(name, text) {
-  text = text.replaceAll("index.html#packages", "pricing.html");
-  text = text.replaceAll('<li><a href="#packages">Pricing</a></li>', '<li><a href="pricing.html">Pricing</a></li>');
+  text = text.replaceAll("index.html#packages", "pricing");
+  text = text.replaceAll('<li><a href="#packages">Pricing</a></li>', '<li><a href="pricing">Pricing</a></li>');
   text = text.replaceAll(
     '<a href="#packages" onclick="closeMobile()">Pricing</a>',
-    '<a href="pricing.html" onclick="closeMobile()">Pricing</a>'
+    '<a href="pricing" onclick="closeMobile()">Pricing</a>'
   );
-  text = text.replaceAll('href="#packages"', 'href="pricing.html"');
+  text = text.replaceAll('href="#packages"', 'href="pricing"');
 
   if (!text.includes("navResourcesMenu")) {
     const hadDesktop = DESKTOP_RESOURCES_RE.test(text);
@@ -91,8 +91,8 @@ function patchText(name, text) {
 
   if (name === "pricing.html") {
     text = text.replace(
-      '<li><a href="pricing.html">Pricing</a></li>',
-      '<li><a href="pricing.html" aria-current="page">Pricing</a></li>',
+      '<li><a href="pricing">Pricing</a></li>',
+      '<li><a href="pricing" aria-current="page">Pricing</a></li>',
       1
     );
   }

@@ -1,5 +1,8 @@
 # CraftedPixel — https://getcraftedpixel.com
 User-agent: *
 Allow: /
+Disallow: /assets/vendor/
+Disallow: /*.min.js$
+Disallow: /*.min.css$
 
 Sitemap: https://getcraftedpixel.com/sitemap.xml

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="mbg" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0c1929"/>
+      <stop offset="100%" stop-color="#1e4d72"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#mbg)"/>
+  <circle cx="720" cy="180" r="140" fill="#fff" opacity="0.04"/>
+  <circle cx="120" cy="980" r="200" fill="#fff" opacity="0.03"/>
+  <text x="450" y="640" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="220" font-family="system-ui,Segoe UI,sans-serif" font-weight="700">MB</text>
+</svg>

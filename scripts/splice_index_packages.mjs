@@ -19,16 +19,16 @@ const teaser = `  <!-- PACKAGES TEASER -->
         <div data-anim="fade-up"><span class="section-label">Pricing</span></div>
         <h2 class="section-heading" data-anim="fade-up" data-delay="1">Simple pricing. No games.</h2>
         <p class="section-sub" data-anim="fade-up" data-delay="2" style="margin-left:auto;margin-right:auto;text-align:center;max-width:52ch">Four clear tiers per service line—each with a detailed comparison table on our dedicated pricing page.</p>
-        <p class="packages-expectations-note" data-anim="fade-up" data-delay="3">Numbers are <strong>starting points</strong> until we align scope—see <a href="how-we-work.html#pricing-expectations">what drives the final quote</a> and the <a href="how-we-work.html#after-email">timeline from your first email</a>.</p>
+        <p class="packages-expectations-note" data-anim="fade-up" data-delay="3">Numbers are <strong>starting points</strong> until we align scope—see <a href="how-we-work#pricing-expectations">what drives the final quote</a> and the <a href="how-we-work#after-email">timeline from your first email</a>.</p>
         <div class="packages-teaser-cta" data-anim="fade-up" data-delay="4" style="margin-top:28px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center">
-          <a href="pricing.html" class="button button--primary">
+          <a href="pricing" class="button button--primary">
             <span>View full pricing</span>
             <span class="button__icon-wrapper" aria-hidden="true">
               <i class="fa-solid fa-table-cells-large button__icon-svg"></i>
               <i class="fa-solid fa-table-cells-large button__icon-svg button__icon-svg--copy"></i>
             </span>
           </a>
-          <a href="contact.html" class="button button--secondary">
+          <a href="contact" class="button button--secondary">
             <span>Get a quote</span>
             <span class="button__icon-wrapper" aria-hidden="true">
               <i class="fa-solid fa-paper-plane button__icon-svg"></i>
@@ -36,7 +36,7 @@ const teaser = `  <!-- PACKAGES TEASER -->
             </span>
           </a>
         </div>
-        <p class="packages-teaser-hint">Jump to a service tab: <a href="pricing.html#uiux">UI/UX</a> · <a href="pricing.html#webdev">Web dev</a> · <a href="pricing.html#seo">SEO</a> · <a href="pricing.html#brand">Brand</a> · <a href="pricing.html#cms">CMS</a> · <a href="pricing.html#analytics">Analytics</a>.</p>
+        <p class="packages-teaser-hint">Jump to a service tab: <a href="pricing#uiux">UI/UX</a> · <a href="pricing#webdev">Web dev</a> · <a href="pricing#seo">SEO</a> · <a href="pricing#brand">Brand</a> · <a href="pricing#cms">CMS</a> · <a href="pricing#analytics">Analytics</a>.</p>
       </div>
     </div>
   </section>

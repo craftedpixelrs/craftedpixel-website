@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="drg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#drg)"/>
+  <circle cx="200" cy="220" r="120" fill="#fff" opacity="0.035"/>
+  <circle cx="780" cy="920" r="180" fill="#fff" opacity="0.025"/>
+  <text x="450" y="640" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="220" font-family="system-ui,Segoe UI,sans-serif" font-weight="700">DR</text>
+</svg>
